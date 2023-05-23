@@ -1,0 +1,42 @@
+﻿@using System.Security.Claims;
+@{
+    var data = User.FindFirstValue(ClaimTypes.Role);
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+}
+
+
+<table class="table">
+    @if (data == "Admin")
+    {
+        <a class="btn btn-primary" asp-action="Create">Create  </a>
+    }
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Start Date</th>
+            <th scope="col">End Date</th>
+            <th scope="col">Classes</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Semester item in ViewBag.data)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.StartDate</td>
+                <td>@item.EndDate</td>
+                <td>
+                    @foreach (Class i in item.Classes)
+                    {
+                        @i.Name <br/>
+                    }
+                </td>
+                <td>
+                    <a class="btn btn-primary" asp-route-id="@item.Id" asp-action="AddClass">Add Class</a>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>

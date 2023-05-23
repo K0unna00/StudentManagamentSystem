@@ -1,0 +1,156 @@
+﻿@using System.Security.Claims;
+@{
+    var data = User.FindFirstValue(ClaimTypes.Role);
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var check = false;
+}
+
+
+@if (data == "Admin")
+{
+    <a class="btn btn-primary" asp-action="Create">Create  </a>
+}
+@if (data == "Admin" || data == "HeadOfDepartment")
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Code</th>
+                <th scope="col">Credit</th>
+                <th scope="col">Instructor  Name</th>
+                <th scope="col">Enrolled Students</th>
+                @if (data == "HeadOfDepartment")
+                {
+                    <th scope="col">Actions</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @if (ViewBag.clas != null)
+            {
+                @foreach (Class item in ViewBag.clas)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.Code</td>
+                        <td>@item.Credit</td>
+
+                        @if (item.TeacherId != null)
+                        {
+                            <td>@ViewBag.teacherNmae</td>
+                        }
+                        else
+                        {
+                            <td>Not specified</td>
+                        }
+                        <td>
+                            @foreach (StudentClass ST in item.StudentClasses)
+                            {
+                                <p>@ST.Student</p>
+                            }
+                        <td>
+
+                                @if (data == "HeadOfDepartment")
+                                {
+                                <a class="btn  btn-warning" asp-route-id="@item.Id" asp-action="addTeacher">Add Instructor </a>
+                                }
+                        </td>
+
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}
+@if (data == "Student")
+{
+    <h3>Unregistered Classes</h3>
+    <table class="table">
+
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Code</th>
+                <th scope="col">Credit</th>
+                <th scope="col">Instructor  Name</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (ViewBag.clas != null)
+            {
+                @foreach (Class item in ViewBag.clas)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.Code</td>
+                        <td>@item.Credit</td>
+
+                        @if (item.TeacherId != null)
+                        {
+                            <td>@ViewBag.teacherNmae</td>
+
+                            check=true;
+                        }
+                        else
+                        {
+                            <td>Not specified</td>
+                        }
+                        @if (check)
+                        {
+                            <td>
+                                <a class="btn  btn-warning" asp-route-id="@item.Id" asp-route-userID="@userId" asp-action="addStudent">Join This Class</a>
+                            </td>
+                            check= false;
+                        }
+                        else
+                        {
+                             <td>
+                                <button class="btn  btn-warning" disabled>Wait for Manager to add the Instructer</button>
+                            </td>
+                        }
+
+
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+    <h3>Enrolled</h3>
+    <table class="table">
+
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Code</th>
+                <th scope="col">Credit</th>
+                <th scope="col">Instructor  Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (ViewBag.clas != null)
+            {
+                @foreach (Class item in ViewBag.enrolledClasses)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.Code</td>
+                        <td>@item.Credit</td>
+
+                        @if (item.TeacherId != null)
+                        {
+                            <td>@ViewBag.teacherNmae</td>
+                        }
+                        else
+                        {
+                            <td>Not specified</td>
+                        }
+
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}

@@ -1,0 +1,25 @@
+﻿<table class="table">
+
+    <thead>
+        <tr>
+            <th scope="col">User Name</th>
+            <th scope="col">Actions</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @if (ViewBag.data != null)
+        {
+            @foreach (AppUser user in ViewBag.data)
+            {
+                <tr>
+                    <td>@user.UserName</td>
+                    <td>
+                        <a class="btn  btn-warning" asp-route-id="@user.Id" asp-action="AcceptRequest">Accept Request</a>
+                    </td>
+
+                </tr>
+            }
+        }
+    </tbody>
+</table>

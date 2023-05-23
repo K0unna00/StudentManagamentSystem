@@ -1,0 +1,24 @@
+﻿
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Instructers</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in ViewBag.data)
+        {
+             <tr>
+                    <td>@item.UserName</td>
+                    <td>
+                        <a class="btn btn-primary" asp-route-data="@item.Id" asp-route-id="@ViewBag.id" asp-action="AddThisTeacher">Add In This Class</a>
+                    </td>
+
+                </tr>
+
+
+        }
+    </tbody>
+</table>
